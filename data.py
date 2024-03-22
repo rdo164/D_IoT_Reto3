@@ -6,11 +6,13 @@ import json
 #importo mi clase generador
 from classGenerador import Generador
 
-def data(generador):
+def generar_data(generador):
+
+    datos_incorrectos = False
 
     id = generador.generador_id 
     
-    #p_error = np.random.randint(1,100) 
+    p_error = np.random.randint(1,100) 
 
     # timestamp
     timestamp = datetime.utcnow().isoformat()
@@ -29,8 +31,11 @@ def data(generador):
     temperatura = np.random.normal(15, 2)
 
     # probabilidad de error
-    #if(p_error < 5):
-    #    temperatura = -23342
+    if(p_error < 5):
+        temperatura = -23342
+        datos_incorrectos = True
+
+
 
     generador.set_temperatura(temperatura)
     
@@ -41,6 +46,8 @@ def data(generador):
     # potencia generada
     potencia_generada = np.random.randint(0, 1000)
     generador.set_potencia_generada(potencia_generada)
+
+
 
     medicion = {
         "generador_id": id,
@@ -58,7 +65,7 @@ def data(generador):
         "potencia_generada": potencia_generada,
     }
     
-    return medicion
+    return medicion, datos_incorrectos
 
 
 # creo la 
@@ -66,22 +73,22 @@ mediciones = []
 output_file_path = './archivo/data.json'
 n_generadores = 1
 
-with open(output_file_path, 'a') as output_file:
+#with open(output_file_path, 'a') as output_file:
 
-    for i in range(n_generadores):
-        generador_id = i+1
+  #  for i in range(n_generadores):
+   #     generador_id = i+1
         # Creo un objeto tipo generador 
-        generador = Generador(generador_id) 
+    #    generador = Generador(generador_id) 
         
         
-        medicion = data(generador)
+        #medicion = data(generador)
 
         # añado la medición creada 
-        mediciones.append(generador) 
+       # mediciones.append(generador) 
 
         # guardar los registros en un archivo JSON 
-        json.dump(medicion, output_file)
-        output_file.write('\n')
+        # json.dump(medicion, output_file)
+        # output_file.write('\n')
 
 
             
