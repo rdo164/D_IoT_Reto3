@@ -11,7 +11,7 @@ import json
 app = FastAPI()
 
 n_generadores = 10
-
+mediciones = []
 
 class Medicion(BaseModel):
     generador_id: int
@@ -26,29 +26,26 @@ class Medicion(BaseModel):
 @app.post("/mediciones/")
 async def create_upload_file(medicion: Medicion):
  
-    generador_id = 1
-    generador = Generador(generador_id)
 
-    medicion, datos_incorrectos = generar_data(generador)
+    for i in range(n_generadores):
+     generador_id = i + 1
+     generador = Generador(generador_id)
+
+     medicion, datos_incorrectos = generar_data(generador)
+     mediciones.append(medicion)
 
     if datos_incorrectos == False:
-        print("Los datos recibidos son:", medicion)
-        return { "mensaje": "datos enviados correctamente" }
-    
+        print("Los datos recibidos son:", medicion) 
+
     else:
-        raise HTTPException(status_code=400, detail="datos INCORRECTOS")
-    
+        raise HTTPException(status_code=400, detail=f"datos del generador{generador.get_generador_id()} INCORRECTOS")
+
+@app.get("/mediciones/")
+async def get_mediciones():
+    return mediciones
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
-
-
-@app.get("/pepe/")
-async def root(mediciones: List[Medicion], file: UploadFile = File(...)):
-
-    file_path = "./archivo/data.json"
-    file_content = await file.read(file_path)
-    file_data = json.loads(file_content)
-
-    return file_data

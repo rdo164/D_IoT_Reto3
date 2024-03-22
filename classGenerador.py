@@ -10,6 +10,10 @@ class Generador:
         self.generador_id = generador_id
         self.potencia_generada = potencia_generada
 
+
+    def get_generador_id(self):
+        return self.generador_id
+
     def set_fecha_hora(self, fecha_hora):
         self.fecha_hora = fecha_hora
 

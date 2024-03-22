@@ -12,7 +12,7 @@ def generar_data(generador):
 
     id = generador.generador_id 
     
-    p_error = np.random.randint(1,100) 
+    #p_error = np.random.randint(1,100) 
 
     # timestamp
     timestamp = datetime.utcnow().isoformat()
@@ -31,9 +31,9 @@ def generar_data(generador):
     temperatura = np.random.normal(15, 2)
 
     # probabilidad de error
-    if(p_error < 5):
-        temperatura = -23342
-        datos_incorrectos = True
+    #if(p_error < 5):
+    #    temperatura = -23342
+    #    datos_incorrectos = True
 
 
 
