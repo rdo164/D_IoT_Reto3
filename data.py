@@ -1,27 +1,87 @@
 import numpy as np
 import pandas as pd
+import random
+from datetime import datetime
+import json
+#importo mi clase generador
+from classGenerador import Generador
 
-# Definir variables
-generador_id = 1
-fecha_hora = pd.to_datetime("2023-03-08 12:00:00")
-velocidad_viento = np.random.normal(10, 2)
-direccion_viento = np.random.randint(0, 360)
-temperatura = np.random.normal(15, 2)
-humedad = np.random.randint(40, 80)
-potencia_generada = np.random.randint(0, 1000)
+def data(generador):
+
+    id = generador.generador_id 
+    
+    #p_error = np.random.randint(1,100) 
+
+    # timestamp
+    timestamp = datetime.utcnow().isoformat()
+    
+    generador.set_fecha_hora(timestamp)
+    
+    # velocidad viento
+    vv = np.random.normal(10, 2)
+    generador.set_velocidad_viento(vv)
+
+    # Dirección de viento
+    direccion_viento = np.random.randint(0, 360)
+    generador.set_direccion_viento(direccion_viento)
+
+    # temperatura
+    temperatura = np.random.normal(15, 2)
+
+    # probabilidad de error
+    #if(p_error < 5):
+    #    temperatura = -23342
+
+    generador.set_temperatura(temperatura)
+    
+    # humedad
+    humedad = np.random.randint(40, 80)
+    generador.set_humedad(humedad)
+    
+    # potencia generada
+    potencia_generada = np.random.randint(0, 1000)
+    generador.set_potencia_generada(potencia_generada)
+
+    medicion = {
+        "generador_id": id,
+
+        "fecha_hora": timestamp,
+        
+        "velocidad_viento": vv,
+        
+        "direccion_viento": direccion_viento,
+        
+        "temperatura": temperatura,
+        
+        "humedad": humedad,
+        
+        "potencia_generada": potencia_generada,
+    }
+    
+    return medicion
+
+
+# creo la 
 mediciones = []
-# Crear medición
-medicion = {
-    "fecha_hora": fecha_hora,
-    "velocidad_viento": velocidad_viento,
-    "direccion_viento": direccion_viento,
-    "temperatura": temperatura,
-    "humedad": humedad,
-    "potencia_generada": potencia_generada,
-    "generador_id": generador_id
-}
+output_file_path = './archivo/data.json'
+n_generadores = 1
+
+with open(output_file_path, 'a') as output_file:
+
+    for i in range(n_generadores):
+        generador_id = i+1
+        # Creo un objeto tipo generador 
+        generador = Generador(generador_id) 
+        
+        
+        medicion = data(generador)
+
+        # añado la medición creada 
+        mediciones.append(generador) 
+
+        # guardar los registros en un archivo JSON 
+        json.dump(medicion, output_file)
+        output_file.write('\n')
 
 
-mediciones.append(medicion)
-
-print(medicion)
+            
