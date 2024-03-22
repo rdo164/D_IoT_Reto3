@@ -5,7 +5,6 @@ from datetime import datetime
 from data import generar_data
 from classGenerador import Generador
 from fastapi import HTTPException
-
 import json
 
 app = FastAPI()
@@ -25,10 +24,12 @@ class Medicion(BaseModel):
 # creo un endpoint 
 @app.post("/mediciones/")
 async def create_upload_file(medicion: Medicion):
- 
+
 
     for i in range(n_generadores):
+     
      generador_id = i + 1
+     
      generador = Generador(generador_id)
 
      medicion, datos_incorrectos = generar_data(generador)
